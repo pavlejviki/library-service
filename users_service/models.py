@@ -3,12 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext as _
 
-# Implement CRUD for Users Service
-# Initialize users app
-# Add user model with email
-# Add JWT support
-# For a better experience during working with the `ModHeader` Chrome extension - change the default `Authorization` header for JWT authentication to for example `Authorize` header. Take a look at the docs on how to deal with it.
-# Implement serializer & views for all endpoints
+
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
