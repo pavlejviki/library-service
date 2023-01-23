@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "users_service",
     "rest_framework",
     "rest_framework_simplejwt",
+    "books_service",
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZE',
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZE",
 }
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
