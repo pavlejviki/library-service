@@ -1,3 +1,10 @@
 from django.shortcuts import render
 
-# Create your views here.
+# class MovieViewSet(
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     viewsets.GenericViewSet,
+# ):
+#     queryset = Movie.objects.all().prefetch_related("genres", "actors")
+#     serializer_class = MovieSerializer
+#     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
