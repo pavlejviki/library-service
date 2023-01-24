@@ -13,17 +13,17 @@ class Borrowing(models.Model):
     user_id = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def clean(self):
-        if self.expected_return_date <= self.borrow_date:
+        if self.expected_return_date < self.borrow_date:
             raise ValidationError(
                 "Expected return date must be later than the borrow date."
             )
-        if self.actual_return_date and self.actual_return_date <= self.borrow_date:
+        if self.actual_return_date and self.actual_return_date < self.borrow_date:
             raise ValidationError(
                 "Actual return date must be later than the borrow date."
             )
 
     def validate_return_date(self):
-        if self.actual_return_date and self.pk:
+        if Borrowing.objects.filter(pk=self.pk, actual_return_date__isnull=False).exists():
             raise ValidationError("Borrowing can be returned only once.")
 
     def manage_book_inventory(self, *args, **kwargs):

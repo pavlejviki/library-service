@@ -1,9 +1,12 @@
 from rest_framework import serializers
 
+from books_service.serializers import BookSerializer
 from borrowings_service.models import Borrowing
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
+    book_id = BookSerializer(many=False, read_only=True)
+
     class Meta:
         model = Borrowing
         fields = (
