@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 
@@ -15,11 +14,19 @@ class Borrowing(models.Model):
 
     def clean(self):
         if self.expected_return_date <= self.borrow_date:
-            raise ValidationError("Expected return date must be later than the borrow date.")
-        if self.actual_return_date and self.actual_return_date <= self.expected_return_date:
-            raise ValidationError("Actual return date must be later than expected return date.")
+            raise ValidationError(
+                "Expected return date must be later than the borrow date."
+            )
+        if self.actual_return_date and self.actual_return_date <= self.borrow_date:
+            raise ValidationError(
+                "Actual return date must be later than the borrow date."
+            )
 
-    def save(self, *args, **kwargs):
+    def validate_return_date(self):
+        if self.actual_return_date and self.pk:
+            raise ValidationError("Borrowing can be returned only once.")
+
+    def manage_book_inventory(self, *args, **kwargs):
         with transaction.atomic():
             book = self.book_id
             if not self.pk:
@@ -32,5 +39,10 @@ class Borrowing(models.Model):
                 book.save()
             super().save(*args, **kwargs)
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        self.validate_return_date()
+        self.manage_book_inventory(*args, *kwargs)
+
     def __str__(self):
-        return f'Borrowing of book {self.book_id.title} by user {self.user_id}'
+        return f"Borrowing of book {self.book_id.title} by user {self.user_id}"
