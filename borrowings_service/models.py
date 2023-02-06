@@ -30,7 +30,7 @@ class Borrowing(models.Model):
         with transaction.atomic():
             book = self.book_id
             if not self.pk:
-                if book.inventory < 1:
+                if book.inventory == 0:
                     raise ValidationError("This book is not available for borrowing.")
                 book.inventory -= 1
                 book.save()
