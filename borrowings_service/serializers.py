@@ -41,7 +41,6 @@ class BorrowingCreateSerializer(BorrowingSerializer):
             "expected_return_date",
             "actual_return_date",
             "book_id",
-            "user_id",
         )
 
     def validate(self, data):
