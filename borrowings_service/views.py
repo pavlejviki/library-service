@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import mixins, viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from borrowings_service.models import Borrowing
 from borrowings_service.serializers import (
@@ -19,7 +20,14 @@ class BorrowingViewSet(
 ):
     queryset = Borrowing.objects.prefetch_related("user_id", "book_id")
     # serializer_class = BorrowingSerializer
-    # permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = Borrowing.objects.filter(user_id=self.request.user) #TODO:add debug tool bar
+        is_active = self.request.query_params.get("is_active")
+        if is_active:
+            queryset = queryset.filter(actual_return_date__isnull=True)
+        return queryset
 
     def get_serializer_class(self):
         if self.action == "list" or self.action == "retrieve":
