@@ -1,11 +1,17 @@
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from books_service.serializers import BookSerializer
 from borrowings_service.models import Borrowing
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     class Meta:
         model = Borrowing
         fields = (
@@ -37,6 +43,7 @@ class BorrowingCreateSerializer(BorrowingSerializer):
     class Meta:
         model = Borrowing
         fields = (
+            "id",
             "borrow_date",
             "expected_return_date",
             "actual_return_date",
