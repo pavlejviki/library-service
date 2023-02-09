@@ -24,5 +24,5 @@ urlpatterns = [
         "api/borrowings/",
         include("borrowings_service.urls", namespace="borrowings-service"),
     ),
-    path('__debug__/', include('debug_toolbar.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
