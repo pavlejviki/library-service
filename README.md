@@ -1,11 +1,4 @@
-###
-Implement the possibility of sending notifications on each Borrowing creation
-Set up a telegram chat for notifications posting in there
-Set up a telegram bot for sending notifications
-Investigate the `sendMessage` function interface in Telegram API
-Make sure all private data is private, and never enters the GitHub repo (you can use the `python-dotenv` package for simple working with `.env` files. Make sure to add the `.env.sample` file with the `.env` content skeleton)
-Create a helper for sending messages to the notifications chat through Telegram API
-Integrate sending notifications on new borrowing creation (provide info about this borrowing in the message)
-
-### 
-
+Implement a daily-based function for checking borrowings overdue
+The function should filter all borrowings, which are overdue (expected_return_date is tomorrow or less, and the book is still not returned) and send a notification to the telegram chat about each overdue separately with detailed information
+It will be a scheduled task, and Django by default cannot do such tasks. To perform this task, you’ll have to use one of the following packages: `Django-Q` or `Django-Celery`. Choose the one you like more.
+If no borrowings are overdue for that day - send a “No borrowings overdue today!” notification.
