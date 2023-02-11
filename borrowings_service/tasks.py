@@ -1,10 +1,9 @@
-from borrowings_service.models import Borrowing
-
 from celery import shared_task
+from utils import find_overdue_borrowings
+
+from borrowings_service.models import Borrowing
 
 
 @shared_task
-def count_borrowings() -> int:
-    return Borrowing.objects.count()
-
-
+def daily_overdue_borrowings_check() -> int:
+    find_overdue_borrowings()
