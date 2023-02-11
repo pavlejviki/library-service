@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+
 # from dotenv import load_dotenv
 #
 # load_dotenv()
@@ -40,13 +41,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_celery_beat",
     "debug_toolbar",
     "users_service",
     "rest_framework",
     "rest_framework_simplejwt",
     "books_service",
     "borrowings_service",
-    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -121,9 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
 
 AUTH_USER_MODEL = "users_service.user"
 # Internationalization

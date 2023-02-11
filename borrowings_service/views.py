@@ -53,4 +53,9 @@ class BorrowingViewSet(
     def perform_create(self, serializer):
         user = self.request.user
         borrowing = serializer.save(user_id=user)
-        send_message(user, borrowing)
+        message = (
+            f"Borrowing created successfully on {borrowing.borrow_date} "
+            f'for book "{borrowing.book_id.title}"'
+            f' with expected return date "{borrowing.expected_return_date}" for user {user.first_name} {user.last_name}'
+        )
+        send_message(message)
