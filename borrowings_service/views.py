@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -8,6 +7,8 @@ from borrowings_service.serializers import (
     BorrowingReadSerializer,
     BorrowingCreateSerializer,
 )
+
+from telegram import send_message
 
 
 class BorrowingViewSet(
@@ -19,7 +20,6 @@ class BorrowingViewSet(
     viewsets.GenericViewSet,
 ):
     queryset = Borrowing.objects.prefetch_related("user_id", "book_id")
-    # serializer_class = BorrowingSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -51,4 +51,6 @@ class BorrowingViewSet(
         return BorrowingSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user_id=self.request.user)
+        user = self.request.user
+        borrowing = serializer.save(user_id=user)
+        send_message(user, borrowing)
