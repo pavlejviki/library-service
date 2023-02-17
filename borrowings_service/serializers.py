@@ -2,14 +2,12 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from books_service.serializers import BookSerializer
 from borrowings_service.models import Borrowing
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
-    authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     class Meta:
@@ -65,19 +63,22 @@ class BorrowingCreateSerializer(BorrowingSerializer):
         return data
 
     @staticmethod
-    def update_book(book, actual_return_date):
+    def decrease_book_inventory(book):
+        if book.inventory == 0:
+            raise ValidationError("This book is not available for borrowing.")
+        book.inventory -= 1
+        book.save()
+
+    @staticmethod
+    def increase_book_inventory(book, actual_return_date):
         if actual_return_date:
             book.inventory += 1
             book.save()
 
     def create(self, validated_data):
-
         with transaction.atomic():
             book = validated_data.get("book_id")
-            if book.inventory == 0:
-                raise ValidationError("This book is not available for borrowing.")
-            book.inventory -= 1
-            book.save()
+            self.decrease_book_inventory(book)
             borrowing = Borrowing.objects.create(**validated_data)
             return borrowing
 
@@ -87,7 +88,7 @@ class BorrowingCreateSerializer(BorrowingSerializer):
             if instance.actual_return_date:
                 raise ValidationError("Borrowing can be returned only once.")
             actual_return_date = validated_data.get("actual_return_date")
-            self.update_book(book, actual_return_date)
+            self.increase_book_inventory(book, actual_return_date)
             instance.actual_return_date = validated_data.get(
                 "actual_return_date", instance.actual_return_date
             )

@@ -13,9 +13,9 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-# from dotenv import load_dotenv
-#
-# load_dotenv()
+from dotenv import load_dotenv
+
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_celery_beat",
     "debug_toolbar",
-    "users_service",
     "rest_framework",
     "rest_framework_simplejwt",
+    "users_service",
     "books_service",
     "borrowings_service",
 ]
@@ -122,13 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# INTERNAL_IPS = [
-#     "127.0.0.1",
-# ]
-
 AUTH_USER_MODEL = "users_service.user"
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
+
+# Telegram settings
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
 LANGUAGE_CODE = "en-us"
 

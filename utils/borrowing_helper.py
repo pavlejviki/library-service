@@ -11,6 +11,7 @@ def find_overdue_borrowings():
     overdue_borrowings = Borrowing.objects.filter(
         expected_return_date__lte=tomorrow, actual_return_date__isnull=True
     )
+
     if not overdue_borrowings:
         message = "No borrowings overdue today!"
         send_message(message)
