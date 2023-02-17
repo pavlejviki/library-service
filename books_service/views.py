@@ -12,7 +12,9 @@ class BookViewSet(viewsets.ModelViewSet):
     authentication_classes = (JWTAuthentication,)
 
     def get_permissions(self):
-        self.permission_classes = [IsAdminUser, ]
+        self.permission_classes = [
+            IsAdminUser,
+        ]
         if self.request.method == "GET":
             self.permission_classes = [
                 AllowAny,

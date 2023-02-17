@@ -1,7 +1,5 @@
 from celery import shared_task
-from utils import find_overdue_borrowings
-
-from borrowings_service.models import Borrowing
+from utils.borrowing_helper import find_overdue_borrowings
 
 
 @shared_task

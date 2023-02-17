@@ -1,7 +1,7 @@
 import datetime
 
 from borrowings_service.models import Borrowing
-from telegram import send_message
+from telegram_notifier import send_message
 
 
 def find_overdue_borrowings():

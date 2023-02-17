@@ -8,7 +8,7 @@ from borrowings_service.serializers import (
     BorrowingCreateSerializer,
 )
 
-from telegram import send_message
+from utils.telegram_notifier import send_message
 
 
 class BorrowingViewSet(
